@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>湘潭铺子邀您共赏贵族品质枸杞槟榔 喜赢万份红包</title>
+    <script src="http://g.alicdn.com/ilw/cdnjs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://g.alicdn.com/fdilab/lib3rd/viewport-units-buggyfill/0.6.2/??viewport-units-buggyfill.hacks.min.js,viewport-units-buggyfill.min.js"></script>
+</head>
+<body>
+<div id="container">
+    <div id="guidePanel"></div>
+    <div id="gamepanel">
+        <div class="score-wrap">
+            <div class="heart"></div>
+            <span id="score">0</span>
+        </div>
+        <canvas id="stage" width="600" height="1126"></canvas>
+    </div>
+	<div id="gameoverPanel"></div>
+	<div id="resultPanel">
+        <a href="javascript:void(0)" class="replay"></a>
+        <div id="fenghao"></div>
+        <div id="scorecontent">
+            您在<span id="stime" class="lighttext">10</span>秒内抢到了<span id="sscore" class="lighttext">20</span>个月饼<br>超过了<span id="suser" class="lighttext">31%</span>的用户！
+        </div>
+        <div class="textc">
+            <span class="btn1 share"></span>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="alias" value="">
+<input type="hidden" id="num" value="3">
+<input type="hidden" id="sc0re" value="10">
+<script>
+    var flag = 1;
+    function GetQueryString(name)
+    {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+	window.onload = function () {
+		window.viewportUnitsBuggyfill.init({
+			hacks: window.viewportUnitsBuggyfillHacks
+        });
+        if(flag == 1){
+            document.getElementById('num').value = GetQueryString("n");
+            document.getElementById('sc0re').value = GetQueryString("s");
+            document.getElementById('alias').value = GetQueryString("a");
+        }
+        else
+        {
+            $("#container").hide();
+            document.getElementById('alias').value = GetQueryString("alias");
+            var url = "http://wzz.ziqisun.com/module/manage/playjson/"+GetQueryString("code");
+            //var url = "http://localhost:81/module/manage/playjson/"+GetQueryString("code");
+            console.log(url);
+            $.ajaxSettings.async = false;
+            $.post(url, null, function(result) {
+                var play = result.data;
+                if(play){
+                    $("#container").show();
+                    document.title = play.title;
+                    document.getElementById('num').value = play.num;
+                    document.getElementById('sc0re').value = play.score;
+                    document.getElementById('bg').value = play.background;
+                }
+            },"json");
+        }
+    }
+</script>
+</body>
+</html>
